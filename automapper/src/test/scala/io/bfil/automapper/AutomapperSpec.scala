@@ -57,6 +57,15 @@ class AutomapperSpec extends WordSpec with Matchers with TestData {
 
     }
 
+    "compilation error: " +
+        "type mismatch " +
+        "found   : TestFieldClass (in io.bfil.automapper.testcase.from)" +
+        "required: TestFieldClass (in io.bfil.automapper.testcase.to), for code: automap(sourceFromDependency).to[testcase.to.TestClass]" in {
+
+      "automap(sourceFromDependency).to[testcase.to.TestClass]" should compile
+
+    }
+
     "not compile if mapping cannot be generated" in {
 
       "automap(source).to[TargetWithUnexpectedField]" shouldNot compile
@@ -234,6 +243,8 @@ trait TestData {
   val sourcePolymorphicA = SourcePolymorphicClass(SourcePolymorphicClassA("label", 10))
   val sourcePolymorphicB = SourcePolymorphicClass(SourcePolymorphicClassB(11))
   val sourcePolymorphicC = SourcePolymorphicClass(SourcePolymorphicClassC("title"))
+
+  val sourceFromDependency = testcase.from.TestClass(foo = "123", field = testcase.from.TestFieldClass(bar = "321"))
 
   val targetData = TargetData("label", 10)
   val targetLevel2 = TargetLevel2("treasure")

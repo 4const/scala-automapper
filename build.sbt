@@ -1,6 +1,9 @@
 lazy val root = Project("root", file("."))
   .settings(settings, publishArtifact := false)
-  .aggregate(automapperMacros, automapper)
+  .aggregate(automapperTestCases, automapperMacros, automapper)
+
+lazy val automapperTestCases = Project("automapper-test-cases", file("automapper-test-cases"))
+	.settings(settings)
 
 lazy val automapperMacros = Project("automapper-macros", file("automapper-macros"))
   .settings(settings, libraryDependencies ++= Seq(
@@ -11,7 +14,7 @@ lazy val automapper = Project("automapper", file("automapper"))
   .settings(settings, libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "3.0.1" % "test"
   ))
-  .dependsOn(automapperMacros)
+  .dependsOn(automapperMacros, automapperTestCases % "test->test")
 
 lazy val settings = Seq(
   scalaVersion := "2.12.2",
